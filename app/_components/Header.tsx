@@ -1,5 +1,8 @@
 
 import { Button } from '@/components/ui/button'
+import { SignInButton } from '@clerk/nextjs'
+import { Arrow } from '@radix-ui/react-context-menu'
+import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
@@ -30,7 +33,10 @@ function Header() {
         </div>
 
         {/* Get Started Button */}
-        <Button>Get Started</Button>
+        <SignInButton mode='modal' forceRedirectUrl={'/workspace'}>
+            <Button>Get Started <ArrowRight /></Button>
+        </SignInButton>
+
     </div>
   )
 }
