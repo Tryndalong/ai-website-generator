@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
         const result = await db.insert(usersTable).values({
             ...data
         })
-        return NextResponse.json({ user });
+        return NextResponse.json({ user: data });
     }
 
 
