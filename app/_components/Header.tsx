@@ -1,8 +1,9 @@
 
 import { Button } from '@/components/ui/button'
 import { SignInButton } from '@clerk/nextjs'
-import { Arrow } from '@radix-ui/react-context-menu'
+import { currentUser } from '@clerk/nextjs/server'
 import { ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
 
@@ -17,28 +18,35 @@ const MenuOptions = [
     }
 ]
 
-function Header() {
-  return (
-    <div className='flex justify-between items-center p-4 shadow'>
-        {/* Logo x */}
-        <div className='flex items-center gap-2'>
-            <Image src={'/logo.svg'} alt='logo' width={35} height={35} />
-            <h2>AI Website Generator</h2>
-        </div>
-        {/* Menu Options */}
-        <div className='flex items-center gap-8'>
-            {MenuOptions.map((item, index) => (
-                <Button key={index} variant='ghost'>{item.name}</Button>
-            ))}
-        </div>
+async function Header() {
+    const user = await currentUser();
 
-        {/* Get Started Button */}
-        <SignInButton mode='modal' forceRedirectUrl={'/workspace'}>
-            <Button>Get Started <ArrowRight /></Button>
-        </SignInButton>
+    return (
+        <div className='flex justify-between items-center p-4 shadow'>
+            {/* Logo x */}
+            <div className='flex items-center gap-2'>
+                <Image src={'/logo.svg'} alt='logo' width={35} height={35} />
+                <h2>AI Website Generator</h2>
+            </div>
+            {/* Menu Options */}
+            <div className='flex items-center gap-8'>
+                {MenuOptions.map((item, index) => (
+                    <Button key={index} variant='ghost'>{item.name}</Button>
+                ))}
+            </div>
 
-    </div>
-  )
+            {/* Get Started Button */}
+            {!user ? 
+            <SignInButton mode='modal' forceRedirectUrl={'/workspace'}>
+                <Button>Get Started <ArrowRight /></Button>
+            </SignInButton>
+            :
+            <Link href={'/workspace'}>
+                <Button>Get Started <ArrowRight /></Button>
+            </Link>
+            }
+        </div>
+    )
 }
 
 export default Header
